@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ravan365 - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/premium-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--deep-navy);
+            background-image: 
+                radial-gradient(ellipse at top, #1a237e 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, #667eea 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--crystal-white);
+            min-height: 100vh;
+        }
+
+        /* Admin Layout */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 35, 126, 0.95) 100%);
+            border-right: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 30px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .logo-icon i {
+            font-size: 24px;
+            color: #000;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 16px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--silver-gray);
+            border-left: 3px solid transparent;
+            font-weight: 600;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+            color: var(--primary-gold);
+            border-left-color: var(--primary-gold);
+        }
+
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-title {
+            font-size: 32px;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .admin-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--primary-gold);
+        }
+
+        .notification-btn i {
+            font-size: 18px;
+            color: var(--primary-gold);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--danger-gradient);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: statGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes statGlow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20%, 20%); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+        }
+
+        .stat-icon i {
+            font-size: 28px;
+            color: #000;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--silver-gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .admin-table thead {
+            background: var(--gold-gradient);
+        }
+
+        .admin-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #000;
+            letter-spacing: 1px;
+        }
+
+        .admin-table tbody tr {
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .admin-table tbody tr:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .admin-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge.active,
+        .status-badge.completed {
+            background: var(--success-gradient);
+            color: #fff;
+        }
+
+        .status-badge.pending {
+            background: var(--gold-gradient);
+            color: #000;
+        }
+
+        .status-badge.banned,
+        .status-badge.rejected {
+            background: var(--danger-gradient);
+            color: #fff;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: var(--premium-gradient);
+            color: #fff;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Search and Filter */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--crystal-white);
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            color: var(--primary-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 14px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--crystal-white);
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--gold-gradient);
+            color: #000;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* API Section */
+        .api-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .api-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+        }
+
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--emerald-green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-indicator.disconnected {
+            background: var(--ruby-red);
+        }
+
+        /* Password Change Section */
+        .password-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--primary-gold);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-main {
+                padding: 20px;
+            }
+
+            .admin-title {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .section-card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+
+            .btn {
+                margin: 5px 0;
+            }
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <span class="logo-text">Admin Panel</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('registrations')">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Registrations</span>
+                </div>
+                <div class="nav-item" onclick="showSection('users')">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </div>
+                <div class="nav-item" onclick="showSection('deposits')">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>Deposits</span>
+                </div>
+                <div class="nav-item" onclick="showSection('withdrawals')">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Withdrawals</span>
+                </div>
+                <div class="nav-item" onclick="showSection('games')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Games</span>
+                </div>
+                <div class="nav-item" onclick="showSection('api')">
+                    <i class="fas fa-plug"></i>
+                    <span>API Settings</span>
+                </div>
+                <div class="nav-item" onclick="showSection('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item" onclick="showSection('password')">
+                    <i class="fas fa-lock"></i>
+                    <span>Change Password</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="admin-title">Admin Dashboard</h1>
+                <div class="admin-actions">
+                    <div class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notificationCount">0</span>
+                    </div>
+                    <button class="btn btn-secondary" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-value" id="totalBalance">₹0</div>
+                        <div class="stat-label">Total Balance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="stat-value" id="pendingDeposits">0</div>
+                        <div class="stat-label">Pending Deposits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-value" id="pendingWithdrawals">0</div>
+                        <div class="stat-label">Pending Withdrawals</div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Activity</h2>
+                    </div>
+                    <div id="recentActivity"></div>
+                </div>
+            </section>
+
+            <!-- Registrations Section -->
+            <section id="registrations" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">New Registrations</h2>
+                        <button class="btn btn-secondary" onclick="clearRegistrations()">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="search-input" id="searchRegistrations" placeholder="Search registrations..." oninput="filterRegistrations()">
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registrationsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">All Users</h2>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="search-input" id="searchUsers" placeholder="Search users..." oninput="filterUsers()">
+                        <select class="search-input" id="userStatusFilter" onchange="filterUsers()">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="banned">Banned</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deposits Section -->
+            <section id="deposits" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Deposit Requests</h2>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="search-input" id="searchDeposits" placeholder="Search deposits..." oninput="filterDeposits()">
+                        <select class="search-input" id="depositStatusFilter" onchange="filterDeposits()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="depositsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Withdrawals Section -->
+            <section id="withdrawals" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Withdrawal Requests</h2>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="search-input" id="searchWithdrawals" placeholder="Search withdrawals..." oninput="filterWithdrawals()">
+                        <select class="search-input" id="withdrawalStatusFilter" onchange="filterWithdrawals()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="withdrawalsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Games Section -->
+            <section id="games" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Manage Games</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Game Name</th>
+                                    <th>Category</th>
+                                    <th>Provider</th>
+                                    <th>Min Bet</th>
+                                    <th>Max Bet</th>
+                                    <th>Win Ratio</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gamesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Section -->
+            <section id="api" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">API Integration</h2>
+                    </div>
+                    <div class="api-card">
+                        <h3><i class="fas fa-plug"></i> Game Provider API</h3>
+                        <div class="api-status">
+                            <div class="status-indicator" id="apiStatusIndicator"></div>
+                            <span id="apiStatusText">Not Connected</span>
+                        </div>
+                        <form class="form-grid" onsubmit="connectApi(event)">
+                            <div class="form-group">
+                                <label>API Provider</label>
+                                <select id="apiProvider">
+                                    <option value="">Select Provider</option>
+                                    <option value="evolution">Evolution Gaming</option>
+                                    <option value="pragmatic">Pragmatic Play</option>
+                                    <option value="betsoft">Betsoft</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>API Key</label>
+                                <input type="password" id="apiKey" placeholder="Enter API key" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Operator ID</label>
+                                <input type="text" id="operatorId" placeholder="Enter operator ID" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-link"></i> Connect API
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Platform Settings</h2>
+                    </div>
+                    <form class="form-grid" onsubmit="saveSettings(event)">
+                        <div class="form-group">
+                            <label>Platform Name</label>
+                            <input type="text" id="platformName" placeholder="Ravan365">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp Number</label>
+                            <input type="text" id="whatsappNumber" placeholder="919876543210">
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Deposit (₹)</label>
+                            <input type="number" id="minDeposit" placeholder="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Withdrawal (₹)</label>
+                            <input type="number" id="maxWithdraw" placeholder="50000">
+                        </div>
+                        <div class="form-group">
+                            <label>Withdrawal Time (Hours)</label>
+                            <input type="number" id="withdrawalTime" placeholder="24">
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </form>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Payment Settings</h2>
+                    </div>
+                    <form class="form-grid" onsubmit="savePaymentSettings(event)">
+                        <h3 style="grid-column: 1/-1; color: var(--primary-gold);">UPI Settings</h3>
+                        <div class="form-group">
+                            <label>UPI QR URL</label>
+                            <input type="url" id="upiQrUrl" placeholder="https://example.com/qr.png">
+                        </div>
+                        <div class="form-group">
+                            <label>UPI ID</label>
+                            <input type="text" id="upiId" placeholder="example@upi">
+                        </div>
+                        <h3 style="grid-column: 1/-1; color: var(--primary-gold);">Bank Settings</h3>
+                        <div class="form-group">
+                            <label>Account Holder Name</label>
+                            <input type="text" id="bankHolderName" placeholder="Account Holder">
+                        </div>
+                        <div class="form-group">
+                            <label>Account Number</label>
+                            <input type="text" id="bankAccountNumber" placeholder="Account Number">
+                        </div>
+                        <div class="form-group">
+                            <label>IFSC Code</label>
+                            <input type="text" id="bankIfsc" placeholder="IFSC1234567">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <input type="text" id="bankName" placeholder="Bank Name">
+                        </div>
+                        <h3 style="grid-column: 1/-1; color: var(--primary-gold);">USDT Settings</h3>
+                        <div class="form-group">
+                            <label>USDT QR URL</label>
+                            <input type="url" id="usdtQrUrl" placeholder="https://example.com/usdt-qr.png">
+                        </div>
+                        <div class="form-group">
+                            <label>Wallet Address</label>
+                            <input type="text" id="usdtWalletAddress" placeholder="TRC20 Wallet Address">
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Payment Settings
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Change Password Section -->
+            <section id="password" class="content-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Change Admin Password</h2>
+                    </div>
+                    <div class="password-card">
+                        <form onsubmit="changeAdminPassword(event)">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentAdminPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="newAdminPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmNewAdminPassword" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
