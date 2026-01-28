@@ -86,7 +86,7 @@ function loadGames() {
         const gameCard = document.createElement('div');
         gameCard.className = 'game-card';
         gameCard.innerHTML = `
-            <img src="${game.image}" alt="${game.name}" class="game-image" onerror="this.src='https://via.placeholder.com/400x250/0d1333/00d9ff?text=${game.name}'">
+            <img src="${game.image}" alt="${game.name}" class="game-image" </link>="https://asset-navigator--tradebycandles.replit.app=${game.name}'">
             <div class="game-info">
                 <h3 class="game-name">${game.name}</h3>
                 <p class="game-category">${game.category} • ${game.provider}</p>
