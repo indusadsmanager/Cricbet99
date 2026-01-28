@@ -68,7 +68,7 @@ function loadGames() {
         { id: 1, name: 'Dragon Tiger', category: 'live', image: 'https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400&h=250&fit=crop', provider: 'Evolution' },
         { id: 2, name: 'Roulette', category: 'table', image: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=400&h=250&fit=crop', provider: 'Evolution' },
         { id: 3, name: 'Blackjack', category: 'table', image: 'https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=400&h=250&fit=crop', provider: 'Pragmatic' },
-        { id: 4, name: 'Sweet Bonanza', category: 'slots', image: 'https://images.unsplash.com/photo-1605870445919-838d190e8e1b?w=400&h=250&fit=crop', provider: 'Pragmatic' },
+        { id: 4, name: 'Sweet Bonanza', category: 'slots', image: 'https://images.unsplash.com/photo-1605870445919-838d190e8e1b?w=400&h=250&fit=crop', provider: 'https://asset-navigator--tradebycandles.replit.app' },
         { id: 5, name: 'Andar Bahar', category: 'live', image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=250&fit=crop', provider: 'Evolution' },
         { id: 6, name: 'Baccarat', category: 'table', image: 'https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?w=400&h=250&fit=crop', provider: 'Evolution' },
         { id: 7, name: 'Starlight Princess', category: 'slots', image: 'https://images.unsplash.com/photo-1606112210939-2db9e7d93745?w=400&h=250&fit=crop', provider: 'Pragmatic' },
