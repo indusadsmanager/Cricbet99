@@ -534,11 +534,6 @@ body {
 }
 
 /* Premium Animations */
-@keyframes premiumFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(5deg); }
-}
-
 @keyframes premiumShine {
     0% { left: -100%; }
     100% { left: 100%; }
